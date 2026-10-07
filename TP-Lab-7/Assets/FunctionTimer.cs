@@ -1,6 +1,7 @@
+using NativePluginLabCSharp;
+using System;
 using System.Diagnostics;
 using UnityEngine;
-using NativePluginLabCSharp;
 
 public class FunctionTimer : MonoBehaviour
 {
@@ -15,19 +16,48 @@ public class FunctionTimer : MonoBehaviour
         Stopwatch stopwatch = new Stopwatch();
 
         stopwatch.Start(); // Start timing
-        MyFunctionToTest(); // Call the function you want to measure
+        EngineToTest(); // Call the function you want to measure
         stopwatch.Stop();  // Stop timing
 
         // Get the elapsed time
-        long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-        UnityEngine.Debug.Log($"MyFunctionToTest took {elapsedMilliseconds} ms to execute.");
+        long elapsedTicks = stopwatch.ElapsedTicks;
+        UnityEngine.Debug.Log($"Engine took {elapsedTicks} ticks to execute.");
+
+        stopwatch.Reset(); // Reset the stopwatch for the next measurement
+        stopwatch.Start(); // Start timing
+        ManagedToTest(); // Call the function you want to measure
+        stopwatch.Stop();  // Stop timing
+
+        // Get the elapsed time
+        elapsedTicks = stopwatch.ElapsedTicks;
+        UnityEngine.Debug.Log($"Managed Plugin took {elapsedTicks} ticks to execute.");
+
+        stopwatch.Reset(); // Reset the stopwatch for the next measurement
+        stopwatch.Start(); // Start timing
+        NativeToTest(); // Call the function you want to measure
+        stopwatch.Stop();  // Stop timing
+
+        // Get the elapsed time
+        elapsedTicks = stopwatch.ElapsedTicks;
+        UnityEngine.Debug.Log($"Native Plugin took {elapsedTicks} ticks to execute.");
     }
 
-    void MyFunctionToTest()
+    void EngineToTest()
     {
-        EngineSort.TestSort(a, a.Length); //Make sure you have the code that imports your native DLL and populates the array somewhere
-        NativePluginLab.TestSort(a, a.Length); //Make sure you have the code that imports your native DLL and populates the array somewhere
-        NativePluginLabCSharp.TestSort(a, a.Length); //Make sure you have the code that imports your native DLL and populates the array somewhere
+        EngineTestSort(a, a.Length); 
+    }
+    void  ManagedToTest()
+    {
+        ManagedPluginLab.TestSort(a, a.Length);
+    }
 
+    void NativeToTest()
+    {
+        NativePluginLabCSharps.TestSort(a, a.Length);
+    }
+
+    public static void EngineTestSort(int[] a, int length)
+    {
+        Array.Sort(a, 0, length);
     }
 }

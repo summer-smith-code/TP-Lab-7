@@ -1,9 +1,9 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class NativePluginLab : MonoBehaviour
+public class ManagedPluginLab : MonoBehaviour
 {
-    [DllImport("NativePluginLab", EntryPoint = "TestSort")]
+    [DllImport("ManagedPluginLab", EntryPoint = "TestSort")]
     public static extern void TestSort(int[] a, int length);
 
     public int[] a;
